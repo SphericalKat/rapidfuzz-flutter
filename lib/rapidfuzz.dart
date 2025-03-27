@@ -4,6 +4,8 @@ import 'dart:ffi';
 import 'dart:io';
 import 'dart:isolate';
 
+import 'package:ffi/ffi.dart';
+
 import 'rapidfuzz_bindings_generated.dart';
 
 /// A very short-lived native function.
@@ -31,6 +33,30 @@ Future<int> sumAsync(int a, int b) async {
   _sumRequests[requestId] = completer;
   helperIsolateSendPort.send(request);
   return completer.future;
+}
+
+double ratio(String str1, String str2) {
+  final str1Pointer = str1.toNativeUtf8();
+  final str2Pointer = str2.toNativeUtf8();
+  return _bindings.ratio(str1Pointer.cast<Char>(), str2Pointer.cast<Char>());
+}
+
+double partialRatio(String str1, String str2) {
+  final str1Pointer = str1.toNativeUtf8();
+  final str2Pointer = str2.toNativeUtf8();
+  return _bindings.partial_ratio(str1Pointer.cast<Char>(), str2Pointer.cast<Char>());
+}
+
+double tokenSortRatio(String str1, String str2) {
+  final str1Pointer = str1.toNativeUtf8();
+  final str2Pointer = str2.toNativeUtf8();
+  return _bindings.token_sort_ratio(str1Pointer.cast<Char>(), str2Pointer.cast<Char>());
+}
+
+double tokenSetRatio(String str1, String str2) {
+  final str1Pointer = str1.toNativeUtf8();
+  final str2Pointer = str2.toNativeUtf8();
+  return _bindings.token_set_ratio(str1Pointer.cast<Char>(), str2Pointer.cast<Char>());
 }
 
 const String _libName = 'rapidfuzz';

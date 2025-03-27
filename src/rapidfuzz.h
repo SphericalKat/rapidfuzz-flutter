@@ -1,30 +1,27 @@
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
+#ifndef RAPIDFUZZ_H_
+#define RAPIDFUZZ_H_
 
-#if _WIN32
-#include <windows.h>
-#else
-#include <pthread.h>
-#include <unistd.h>
+// This ensures C++ symbols are properly exported as C symbols
+#ifdef __cplusplus
+extern "C" {
 #endif
 
-#if _WIN32
+#if defined(_WIN32)
+// For Windows
 #define FFI_PLUGIN_EXPORT __declspec(dllexport)
 #else
-#define FFI_PLUGIN_EXPORT
+// For macOS, Linux, etc.
+#define FFI_PLUGIN_EXPORT __attribute__((visibility("default"))) __attribute__((used))
 #endif
 
-// A very short-lived native function.
-//
-// For very short-lived functions, it is fine to call them on the main isolate.
-// They will block the Dart execution while running the native function, so
-// only do this for native functions which are guaranteed to be short-lived.
-FFI_PLUGIN_EXPORT int sum(int a, int b);
+// Declare your C-compatible functions here
+FFI_PLUGIN_EXPORT double ratio(const char* str1, const char* str2);
+FFI_PLUGIN_EXPORT double partial_ratio(const char* str1, const char* str2);
+FFI_PLUGIN_EXPORT double token_sort_ratio(const char* str1, const char* str2);
+FFI_PLUGIN_EXPORT double token_set_ratio(const char* str1, const char* str2);
 
-// A longer lived native function, which occupies the thread calling it.
-//
-// Do not call these kind of native functions in the main isolate. They will
-// block Dart execution. This will cause dropped frames in Flutter applications.
-// Instead, call these native functions on a separate isolate.
-FFI_PLUGIN_EXPORT int sum_long_running(int a, int b);
+#ifdef __cplusplus
+}  // extern "C"
+#endif
+
+#endif  // RAPIDFUZZ_H_

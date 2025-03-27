@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - rapidfuzz (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - rapidfuzz (from `.symlinks/plugins/rapidfuzz/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  rapidfuzz:
+    :path: ".symlinks/plugins/rapidfuzz/ios"
+
+SPEC CHECKSUMS:
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  rapidfuzz: 7c32c7f986a72d16afbaf92cb7963cc4bfc3b5da
+
+PODFILE CHECKSUM: 4305caec6b40dde0ae97be1573c53de1882a07e5
+
+COCOAPODS: 1.16.2

@@ -1,3 +1,3 @@
-[submodule "3rdparty/RapidFuzz"]
-	path = 3rdparty/RapidFuzz
+[submodule "src/rapidfuzz"]
+	path = src/rapidfuzz
 	url = https://github.com/rapidfuzz/rapidfuzz-cpp.git

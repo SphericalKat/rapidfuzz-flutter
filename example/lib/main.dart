@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
 
 import 'package:rapidfuzz/rapidfuzz.dart' as rapidfuzz;
 
@@ -15,14 +14,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late int sumResult;
-  late Future<int> sumAsyncResult;
+  late double ratioResult;
 
   @override
   void initState() {
     super.initState();
-    sumResult = rapidfuzz.sum(1, 2);
-    sumAsyncResult = rapidfuzz.sumAsync(3, 4);
+    ratioResult = rapidfuzz.ratio('Hello', 'World');
   }
 
   @override
@@ -47,22 +44,9 @@ class _MyAppState extends State<MyApp> {
                 ),
                 spacerSmall,
                 Text(
-                  'sum(1, 2) = $sumResult',
+                  'ratio("Hello", "World") = $ratioResult',
                   style: textStyle,
                   textAlign: TextAlign.center,
-                ),
-                spacerSmall,
-                FutureBuilder<int>(
-                  future: sumAsyncResult,
-                  builder: (BuildContext context, AsyncSnapshot<int> value) {
-                    final displayValue =
-                        (value.hasData) ? value.data : 'loading';
-                    return Text(
-                      'await sumAsync(3, 4) = $displayValue',
-                      style: textStyle,
-                      textAlign: TextAlign.center,
-                    );
-                  },
                 ),
               ],
             ),

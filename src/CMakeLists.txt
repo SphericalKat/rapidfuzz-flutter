@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Add RapidFuzz as a subdirectory to use its CMake configuration
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/RapidFuzz ${CMAKE_CURRENT_BINARY_DIR}/rapidfuzz)
+add_subdirectory(rapidfuzz)
 
 # Create your wrapper library with a distinct name
 add_library(rapidfuzz_wrapper SHARED

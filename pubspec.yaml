@@ -1,7 +1,8 @@
 name: rapidfuzz
-description: "A new Flutter FFI plugin project."
+description: "A flutter wrapper for the rapidfuzz library"
 version: 0.0.1
 homepage: https://github.com/spherical/rapidfuzz-flutter
+license: MIT
 
 environment:
   sdk: ^3.7.2

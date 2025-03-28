@@ -18,9 +18,7 @@ A new Flutter FFI plugin project.
   # paths, so Classes contains a forwarder C file that relatively imports
   # `../src/*` so that the C sources can be shared among all target platforms.
   s.source           = { :path => '.' }
-  s.source_files = 'Classes/**/*'
-  # Your wrapper code and RapidFuzz library
-  s.source_files += '../src/**/*.{h,hpp,c,cpp,cc,mm}'
+  s.source_files = 'Classes/**/*', '../src/**/*.{h,hpp,c,cpp,cc,mm}'
   
   # Exclude unnecessary files
   s.exclude_files = '../src/rapidfuzz/test/**/*', 
@@ -28,31 +26,6 @@ A new Flutter FFI plugin project.
                     '../src/rapidfuzz/benchmarks/**/*'
 
 
-
-
-  # Create a symbolic link to help with includes
-  s.script_phase = {
-    :name => 'Setup RapidFuzz Headers',
-    :script => <<-SCRIPT
-      set -e
-      # Remove any old copying from previous builds
-      rm -rf "${PODS_TARGET_SRCROOT}/../my_rapidfuzz"
-      
-      # Create a standard "include/rapidfuzz" tree
-      mkdir -p "${PODS_TARGET_SRCROOT}/../my_rapidfuzz/include/rapidfuzz"
-      
-      # Copy the details/ subfolder
-      cp -r "${PODS_TARGET_SRCROOT}/../src/rapidfuzz/rapidfuzz/details" \
-            "${PODS_TARGET_SRCROOT}/../my_rapidfuzz/include/rapidfuzz/"
-      
-      # Copy fuzz.hpp (and any other .hpp you need)
-      cp "${PODS_TARGET_SRCROOT}/../src/rapidfuzz/rapidfuzz/*.hpp" \
-         "${PODS_TARGET_SRCROOT}/../my_rapidfuzz/include/rapidfuzz/"
-      
-      echo ">> Created a clean RapidFuzz include structure at my_rapidfuzz/include/rapidfuzz"
-      find "${PODS_TARGET_SRCROOT}/../my_rapidfuzz" -type f
-    SCRIPT
-  }
                   
   s.dependency 'Flutter'
   s.platform = :ios, '12.0'
@@ -62,12 +35,12 @@ A new Flutter FFI plugin project.
     'DEFINES_MODULE' => 'YES', 
     'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386',
     'HEADER_SEARCH_PATHS' => [
-      '$(PODS_TARGET_SRCROOT)/../my_rapidfuzz/include',
-      '$(PODS_TARGET_SRCROOT)/..',
-      '$(PODS_TARGET_SRCROOT)/../src'
+      '$(PODS_TARGET_SRCROOT)/../src',
+      '$(PODS_TARGET_SRCROOT)/../src/rapidfuzz',
+      '$(PODS_TARGET_SRCROOT)/../src/rapidfuzz/rapidfuzz'
     ].join(' '),
     'GCC_PREPROCESSOR_DEFINITIONS' => 'RAPIDFUZZ_INCLUDE_SIMD=0',
-    'CLANG_CXX_LANGUAGE_STANDARD' => 'c++17',  # RapidFuzz likely needs C++17
+    'CLANG_CXX_LANGUAGE_STANDARD' => 'c++17',
     'CLANG_CXX_LIBRARY' => 'libc++',
     'GCC_PREPROCESSOR_DEFINITIONS' => ['RAPIDFUZZ_INCLUDE_SIMD=0'].join(' ')
   }

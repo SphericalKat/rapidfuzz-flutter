@@ -10,8 +10,11 @@ class Extractor {
 
   /// Returns the list of choices with their associated scores of similarity in a list of [ExtractedResult]
   List<ExtractedResult<T>> extractWithoutOrder<T>(
-      String query, List<T> choices, Applicable func,
-      [String Function(T obj)? getter]) {
+    String query,
+    List<T> choices,
+    Applicable func, [
+    String Function(T obj)? getter,
+  ]) {
     var yields = List<ExtractedResult<T>>.empty(growable: true);
     var index = 0;
 
@@ -37,34 +40,47 @@ class Extractor {
 
   /// Find the single best match above a score in a list of choices
   ExtractedResult<T> extractOne<T>(
-      String query, List<T> choices, Applicable func,
-      [String Function(T obj)? getter]) {
+    String query,
+    List<T> choices,
+    Applicable func, [
+    String Function(T obj)? getter,
+  ]) {
     var extracted = extractWithoutOrder(query, choices, func, getter);
 
     return extracted.reduce(
-        (value, element) => value.score > element.score ? value : element);
+      (value, element) => value.score > element.score ? value : element,
+    );
   }
 
   /// Creates a **sorted** list of [ExtractedResult] from the most similar choices
   /// to the least.
   List<ExtractedResult<T>> extractSorted<T>(
-      String query, List<T> choices, Applicable func,
-      [String Function(T obj)? getter]) {
+    String query,
+    List<T> choices,
+    Applicable func, [
+    String Function(T obj)? getter,
+  ]) {
     var best = extractWithoutOrder(query, choices, func, getter)..sort();
     return best.reversed.toList();
   }
 
   /// Creates a **sorted** list of [ExtractedResult] which contain the top [limit] most similar choices using k-top heap sort
   List<ExtractedResult<T>> extractTop<T>(
-      String query, List<T> choices, Applicable func, int limit,
-      [String Function(T obj)? getter]) {
+    String query,
+    List<T> choices,
+    Applicable func,
+    int limit, [
+    String Function(T obj)? getter,
+  ]) {
     var best = extractWithoutOrder(query, choices, func, getter);
     var results = _findTopKHeap(best, limit);
     return results.reversed.toList();
   }
 
   List<ExtractedResult<T>> _findTopKHeap<T>(
-      List<ExtractedResult<T>> arr, int k) {
+    List<ExtractedResult<T>> arr,
+    int k,
+  ) {
     var pq = PriorityQueue<ExtractedResult<T>>();
 
     for (var x in arr) {

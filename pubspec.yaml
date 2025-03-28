@@ -1,7 +1,7 @@
 name: rapidfuzz
-description: "A flutter wrapper for the rapidfuzz library"
-version: 0.0.1
-homepage: https://github.com/spherical/rapidfuzz-flutter
+description: "A flutter wrapper for the rapidfuzz library, for fuzzy-matching strings, and calculating the edit distance between strings."
+version: 0.0.2
+homepage: https://github.com/SphericalKat/rapidfuzz-flutter
 license: MIT
 
 environment:

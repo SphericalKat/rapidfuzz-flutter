@@ -70,7 +70,7 @@ class _MyAppState extends State<MyApp> {
         choices: choices,
         cutoff: 10,
       );
-      extractOneResult = oneResult != null ? [oneResult] : [];
+      extractOneResult = [oneResult];
 
       extractTopResult = rapidfuzz.extractTop(
         query: _queryController.text,

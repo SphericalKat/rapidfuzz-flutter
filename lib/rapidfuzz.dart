@@ -1,7 +1,3 @@
-import 'dart:ffi';
-import 'dart:io';
-
-import 'package:ffi/ffi.dart';
 import 'package:rapidfuzz/algorithms/token_set.dart';
 import 'package:rapidfuzz/algorithms/token_sort.dart';
 import 'package:rapidfuzz/algorithms/weighted_ratio.dart';
@@ -9,50 +5,26 @@ import 'package:rapidfuzz/applicable.dart';
 import 'package:rapidfuzz/extraction.dart';
 import 'package:rapidfuzz/models/extracted_result.dart';
 import 'package:rapidfuzz/ratios/partial.dart';
-
-import 'rapidfuzz_bindings_generated.dart';
+import 'package:rapidfuzz/ratios/simple.dart';
+import 'package:rapidfuzz/algorithms/core.dart' as core;
 
 /// Calculates a Levenshtein simple ratio between the strings
 /// This indicates a measure of similarity
 double ratio(String str1, String str2) {
-  final str1Pointer = str1.toNativeUtf8();
-  final str2Pointer = str2.toNativeUtf8();
-  final ratio = _bindings.ratio(
-    str1Pointer.cast<Char>(),
-    str2Pointer.cast<Char>(),
-  );
-  malloc.free(str1Pointer);
-  malloc.free(str2Pointer);
-  return ratio;
+  return core.ratio(str1, str2);
 }
 
 /// Inconsistent substrings lead to problems in matching.
 /// This ratio uses a heuristic called "best partial" for when two strings are
 /// of noticeably different lengths.
 double partialRatio(String str1, String str2) {
-  final str1Pointer = str1.toNativeUtf8();
-  final str2Pointer = str2.toNativeUtf8();
-  final ratio = _bindings.partial_ratio(
-    str1Pointer.cast<Char>(),
-    str2Pointer.cast<Char>(),
-  );
-  malloc.free(str1Pointer);
-  malloc.free(str2Pointer);
-  return ratio;
+  return core.partialRatio(str1, str2);
 }
 
 /// Find all alphanumeric tokens in the string and sort these tokens
 /// and then take ratio of resulting joined strings.
 double tokenSortRatio(String str1, String str2) {
-  final str1Pointer = str1.toNativeUtf8();
-  final str2Pointer = str2.toNativeUtf8();
-  final ratio = _bindings.token_sort_ratio(
-    str1Pointer.cast<Char>(),
-    str2Pointer.cast<Char>(),
-  );
-  malloc.free(str1Pointer);
-  malloc.free(str2Pointer);
-  return ratio;
+  return TokenSort().apply(str1, str2, SimpleRatio());
 }
 
 /// Find all alphanumeric tokens in the string and sort these tokens
@@ -66,15 +38,7 @@ double tokenSortPartialRatio(String str1, String str2) {
 /// built up and is compared using the simple ratio algorithm.
 /// Useful for strings where words appear redundantly.
 double tokenSetRatio(String str1, String str2) {
-  final str1Pointer = str1.toNativeUtf8();
-  final str2Pointer = str2.toNativeUtf8();
-  final ratio = _bindings.token_set_ratio(
-    str1Pointer.cast<Char>(),
-    str2Pointer.cast<Char>(),
-  );
-  malloc.free(str1Pointer);
-  malloc.free(str2Pointer);
-  return ratio;
+  return TokenSet().apply(str1, str2, SimpleRatio());
 }
 
 /// Splits the strings into tokens and computes intersections and remainders
@@ -158,22 +122,3 @@ ExtractedResult<T> extractOne<T>({
   var extractor = Extractor(cutoff);
   return extractor.extractOne(query, choices, ratio, getter);
 }
-
-const String _libName = 'rapidfuzz';
-
-/// The dynamic library in which the symbols for [RapidfuzzBindings] can be found.
-final DynamicLibrary _dylib = () {
-  if (Platform.isMacOS || Platform.isIOS) {
-    return DynamicLibrary.open('$_libName.framework/$_libName');
-  }
-  if (Platform.isAndroid || Platform.isLinux) {
-    return DynamicLibrary.open('lib$_libName.so');
-  }
-  if (Platform.isWindows) {
-    return DynamicLibrary.open('$_libName.dll');
-  }
-  throw UnsupportedError('Unknown platform: ${Platform.operatingSystem}');
-}();
-
-/// The bindings to the native functions in [_dylib].
-final RapidfuzzBindings _bindings = RapidfuzzBindings(_dylib);

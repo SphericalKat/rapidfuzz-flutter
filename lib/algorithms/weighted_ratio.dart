@@ -1,7 +1,11 @@
 import 'dart:math';
 
 import '../applicable.dart';
-import '../rapidfuzz.dart';
+import '../algorithms/core.dart' as core;
+import '../ratios/partial.dart';
+import '../ratios/simple.dart';
+import 'token_set.dart';
+import 'token_sort.dart';
 
 class WeightedRatio implements Applicable {
   static const unbaseScaleConst = 0.95;
@@ -23,23 +27,25 @@ class WeightedRatio implements Applicable {
     var unbaseScale = unbaseScaleConst;
     var partialScale = partialScaleConst;
 
-    var base = ratio(s1, s2);
+    var base = core.ratio(s1, s2);
     var lenRatio = max(len1, len2) / min(len1, len2);
 
     tryPartials = lenRatio >= 1.5;
     if (lenRatio > 8) partialScale = 0.6;
 
     if (tryPartials) {
-      var partial = partialRatio(s1, s2) * partialScale;
+      var partial = core.partialRatio(s1, s2) * partialScale;
       var partialSor =
-          tokenSortPartialRatio(s1, s2) * unbaseScale * partialScale;
+          TokenSort().apply(s1, s2, PartialRatio()) *
+          unbaseScale *
+          partialScale;
       var partialSet =
-          tokenSetPartialRatio(s1, s2) * unbaseScale * partialScale;
+          TokenSet().apply(s1, s2, PartialRatio()) * unbaseScale * partialScale;
 
       return [base, partial, partialSor, partialSet].reduce(max);
     } else {
-      var tokenSort = tokenSortRatio(s1, s2) * unbaseScale;
-      var tokenSet = tokenSetRatio(s1, s2) * unbaseScale;
+      var tokenSort = TokenSort().apply(s1, s2, SimpleRatio()) * unbaseScale;
+      var tokenSet = TokenSet().apply(s1, s2, SimpleRatio()) * unbaseScale;
 
       return [base, tokenSort, tokenSet].reduce(max);
     }

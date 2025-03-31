@@ -1,4 +1,3 @@
-/// Core fuzzy matching algorithms implemented in pure Dart
 import 'dart:math';
 
 /// Calculates the Levenshtein distance between two strings
@@ -12,8 +11,12 @@ int levenshteinDistance(String s1, String s2) {
   );
 
   // Initialize first row and column
-  for (var i = 0; i <= s1.length; i++) matrix[i][0] = i;
-  for (var j = 0; j <= s2.length; j++) matrix[0][j] = j;
+  for (var i = 0; i <= s1.length; i++) {
+    matrix[i][0] = i;
+  }
+  for (var j = 0; j <= s2.length; j++) {
+    matrix[0][j] = j;
+  }
 
   // Fill in the rest of the matrix
   for (var i = 0; i < s1.length; i++) {
@@ -64,7 +67,9 @@ double jaroSimilarity(String s1, String s2) {
   var k = 0;
   for (var i = 0; i < s1.length; i++) {
     if (matches1[i]) {
-      while (!matches2[k]) k++;
+      while (!matches2[k]) {
+        k++;
+      }
       if (s1[i] != s2[k]) transpositions++;
       k++;
     }
@@ -112,8 +117,12 @@ int indelDistance(String s1, String s2) {
   );
 
   // Initialize first row and column
-  for (var i = 0; i <= s1.length; i++) matrix[i][0] = i;
-  for (var j = 0; j <= s2.length; j++) matrix[0][j] = j;
+  for (var i = 0; i <= s1.length; i++) {
+    matrix[i][0] = i;
+  }
+  for (var j = 0; j <= s2.length; j++) {
+    matrix[0][j] = j;
+  }
 
   for (var i = 0; i < s1.length; i++) {
     for (var j = 0; j < s2.length; j++) {

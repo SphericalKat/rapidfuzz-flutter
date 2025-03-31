@@ -1,21 +1,15 @@
 PODS:
   - Flutter (1.0.0)
-  - rapidfuzz (0.0.1):
-    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - rapidfuzz (from `.symlinks/plugins/rapidfuzz/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  rapidfuzz:
-    :path: ".symlinks/plugins/rapidfuzz/ios"
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  rapidfuzz: 8e324181f396481567dddf3e00afb80871140a28
 
 PODFILE CHECKSUM: 4305caec6b40dde0ae97be1573c53de1882a07e5
 

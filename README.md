@@ -1,6 +1,6 @@
 # rapidfuzz
 
-A Flutter wrapper around the [rapidfuzz](https://github.com/maxbachmann/rapidfuzz) library.
+A Flutter port of the [rapidfuzz](https://github.com/maxbachmann/rapidfuzz) library. Note that results may differ from the original implementation due to minor differences in the implementation.
 
 ## Usage
 
@@ -21,7 +21,7 @@ Calculates a Levenshtein simple ratio between the strings
 This indicates a measure of similarity
 
 ```dart
-ratio("this is a test", "this is a test!") // 96.55171966552734
+ratio("this is a test", "this is a test!") // 96.55172413793103
 ```
 ### Partial Ratio
 Inconsistent substrings lead to problems in matching.
@@ -29,7 +29,7 @@ This ratio uses a heuristic called "best partial" for when two strings are
 of noticeably different lengths.
 
 ```dart
-partialRatio("this is a test", "this is a test!") // 100
+partialRatio("this is a test", "this is a test!") // 100.0
 ```
 
 ### Token Sort Ratio
@@ -56,7 +56,7 @@ Calculates a weighted ratio between [s1] and [s2] using the best option from
 the above fuzzy matching algorithms
 
 ```dart
-weightedRatio("The quick brown fox jimps ofver the small lazy dog", "the quick brown fox jumps over the small lazy dog") // 97
+weightedRatio("The quick brown fox jimps ofver the small lazy dog", "the quick brown fox jumps over the small lazy dog") // 96.96969696969697
 ```
 
 ## Extraction
@@ -72,7 +72,7 @@ extractOne(
     'Dallas Cowboys'
   ],
   cutoff: 10,
-) // (string Dallas Cowboys, score: 90, index: 3)
+) // (string Dallas Cowboys, score: 90.0, index: 3)
 ```
 
 ```dart
@@ -90,7 +90,7 @@ extractTop(
   ],
   limit: 4,
   cutoff: 50,
-) // [(string google, score: 83, index: 0), (string googleplus, score: 75, index: 5)]
+) // [(string googleplus, score: 90.0, index: 5), (string google, score: 83.33333333333334, index: 0)]
 ```
 ```dart
 extractAllSorted(
@@ -106,7 +106,7 @@ extractAllSorted(
     'plexoogl'
   ],
   cutoff: 10,
-) // [(string google, score: 83, index: 0), (string googleplus, score: 75, index: 5), (string plexoogl, score: 43, index: 7), (string bingnews, score: 29, index: 6), (string linkedin, score: 29, index: 3), (string facebook, score: 29, index: 2), (string bing, score: 23, index: 1), (string twitter, score: 15, index: 4)]
+) // [(string googleplus, score: 90.0, index: 5), (string google, score: 83.33333333333334, index: 0), (string plexoogl, score: 42.85714285714286, index: 7), (string bingnews, score: 28.57142857142857, index: 6), (string linkedin, score: 28.57142857142857, index: 3), (string facebook, score: 28.57142857142857, index: 2), (string bing, score: 22.5, index: 1), (string twitter, score: 15.384615384615385, index: 4)]
 ```
 ```dart
 extractAll(
@@ -122,7 +122,7 @@ extractAll(
     'plexoogl'
   ],
   cutoff: 10,
-) // [(string google, score: 83, index: 0), (string bing, score: 23, index: 1), (string facebook, score: 29, index: 2), (string linkedin, score: 29, index: 3), (string twitter, score: 15, index: 4), (string googleplus, score: 75, index: 5), (string bingnews, score: 29, index: 6), (string plexoogl, score: 43, index: 7)]
+) // [(string google, score: 83.33333333333334, index: 0), (string bing, score: 22.5, index: 1), (string facebook, score: 28.57142857142857, index: 2), (string linkedin, score: 28.57142857142857, index: 3), (string twitter, score: 15.384615384615385, index: 4), (string googleplus, score: 90.0, index: 5), (string bingnews, score: 28.57142857142857, index: 6), (string plexoogl, score: 42.85714285714286, index: 7)]
 ```
 ### Extract using any a list of any type
 All `extract` methods can receive `List<T>` and return `List<ExtractedResult<T>>`
@@ -142,5 +142,5 @@ extractOne<TestContainer>(
   ].map((e) => TestContainer(e)).toList(),
   cutoff: 10,
   getter: (x) => x.innerVal
-).toString(); // (string Dallas Cowboys, score: 90, index: 3)
+).toString(); // (string Dallas Cowboys, score: 90.0, index: 3)
 ```

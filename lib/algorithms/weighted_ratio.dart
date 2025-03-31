@@ -1,11 +1,9 @@
 import 'dart:math';
 
 import '../applicable.dart';
-import '../algorithms/core.dart' as core;
-import '../ratios/partial.dart';
-import '../ratios/simple.dart';
-import 'token_set.dart' as token_set;
-import 'token_sort.dart' as token_sort;
+import '../algorithms/core.dart';
+import 'token_set.dart';
+import 'token_sort.dart';
 
 class WeightedRatio implements Applicable {
   static const unbaseScaleConst = 0.95;
@@ -31,7 +29,7 @@ class WeightedRatio implements Applicable {
     var unbaseScale = unbaseScaleConst;
     var partialScale = partialScaleConst;
 
-    var base = core.ratio(s1, s2, scoreCutoff: scoreCutoff);
+    var base = ratio(s1, s2, scoreCutoff: scoreCutoff);
     var lenRatio = max(len1, len2) / min(len1, len2);
 
     tryPartials = lenRatio >= 1.5;
@@ -41,16 +39,16 @@ class WeightedRatio implements Applicable {
       // Update score_cutoff when using the results of one algorithm as cutoff for the next
       scoreCutoff = max(scoreCutoff, base) / partialScale;
       var partial =
-          core.partialRatio(s1, s2, scoreCutoff: scoreCutoff) * partialScale;
+          partialRatio(s1, s2, scoreCutoff: scoreCutoff) * partialScale;
 
       scoreCutoff = max(scoreCutoff, partial) / (unbaseScale * partialScale);
       var partialSor =
-          token_sort.tokenSortPartialRatio(s1, s2, scoreCutoff: scoreCutoff) *
+          tokenSortPartialRatio(s1, s2, scoreCutoff: scoreCutoff) *
           unbaseScale *
           partialScale;
 
       var partialSet =
-          token_set.tokenSetPartialRatio(s1, s2, scoreCutoff: scoreCutoff) *
+          tokenSetPartialRatio(s1, s2, scoreCutoff: scoreCutoff) *
           unbaseScale *
           partialScale;
 
@@ -58,10 +56,10 @@ class WeightedRatio implements Applicable {
     } else {
       scoreCutoff = max(scoreCutoff, base) / unbaseScale;
       var tokenSort =
-          token_sort.tokenSortRatio(s1, s2, scoreCutoff: scoreCutoff) *
+          tokenSortRatio(s1, s2, scoreCutoff: scoreCutoff) *
           unbaseScale;
       var tokenSet =
-          token_set.tokenSetRatio(s1, s2, scoreCutoff: scoreCutoff) *
+          tokenSetRatio(s1, s2, scoreCutoff: scoreCutoff) *
           unbaseScale;
 
       return [base, tokenSort, tokenSet].reduce(max);

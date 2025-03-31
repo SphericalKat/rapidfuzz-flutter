@@ -42,13 +42,11 @@ class WeightedRatio implements Applicable {
           partialRatio(s1, s2, scoreCutoff: scoreCutoff) * partialScale;
 
       scoreCutoff = max(scoreCutoff, partial) / (unbaseScale * partialScale);
-      var partialSor =
-          tokenSortPartialRatio(s1, s2, scoreCutoff: scoreCutoff) *
+      var partialSor = tokenSortPartialRatio(s1, s2, scoreCutoff: scoreCutoff) *
           unbaseScale *
           partialScale;
 
-      var partialSet =
-          tokenSetPartialRatio(s1, s2, scoreCutoff: scoreCutoff) *
+      var partialSet = tokenSetPartialRatio(s1, s2, scoreCutoff: scoreCutoff) *
           unbaseScale *
           partialScale;
 
@@ -56,11 +54,9 @@ class WeightedRatio implements Applicable {
     } else {
       scoreCutoff = max(scoreCutoff, base) / unbaseScale;
       var tokenSort =
-          tokenSortRatio(s1, s2, scoreCutoff: scoreCutoff) *
-          unbaseScale;
+          tokenSortRatio(s1, s2, scoreCutoff: scoreCutoff) * unbaseScale;
       var tokenSet =
-          tokenSetRatio(s1, s2, scoreCutoff: scoreCutoff) *
-          unbaseScale;
+          tokenSetRatio(s1, s2, scoreCutoff: scoreCutoff) * unbaseScale;
 
       return [base, tokenSort, tokenSet].reduce(max);
     }

@@ -4,8 +4,6 @@ import 'package:rapidfuzz/algorithms/weighted_ratio.dart';
 import 'package:rapidfuzz/applicable.dart';
 import 'package:rapidfuzz/extraction.dart';
 import 'package:rapidfuzz/models/extracted_result.dart';
-import 'package:rapidfuzz/ratios/partial.dart';
-import 'package:rapidfuzz/ratios/simple.dart';
 import 'package:rapidfuzz/algorithms/core.dart' as core;
 
 /// Calculates a Levenshtein simple ratio between the strings

@@ -1,6 +1,6 @@
 name: rapidfuzz
 description: "A dart port of the rapidfuzz library, for fuzzy-matching strings, and calculating the edit distance between strings."
-version: 0.1.0
+version: 0.1.1
 homepage: https://github.com/SphericalKat/rapidfuzz-flutter
 license: MIT
 

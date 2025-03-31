@@ -1,3 +1,8 @@
+## 0.1.1
+
+* docs: update README.md with correct score values
+* weighted_ratio: run the dart formatter
+
 ## 0.1.0
 
 * treewide: remove c++ bindings and use pure dart implementation
